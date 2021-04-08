@@ -1,0 +1,41 @@
+#
+# test
+#
+
+name: My-GitHub-Actions-Basics
+env:
+  APPLICATION_NAME: "Test Project"
+  DEPLOY_PACKAGE_NAME: "test-project-deploy-ver-${{ github.sha }}"
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  my_test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Print Hello Message In Test
+        run: echo "Hello Message From Test Job"
+
+      - name: Print Application Name
+        run: echo "Application name is ${{env.APPLICATION_NAME}}"
+
+      - name: Git Clone My Repo
+        uses: actions/checkout@v1
+
+      - name: List Current Folder
+        run: ls -la
+
+  my_deploy:
+    runs-on: ubuntu-latest
+    needs: [my_test]
+
+    steps:
+      - name: Print Hello Message In Deploy
+        run: echo "Hello Message From Deploy Job"
+
+      - name: Print Deployement Package
+        run: echo "Deployement package is ${{env.DEPLOY_PACKAGE_NAME}}"
